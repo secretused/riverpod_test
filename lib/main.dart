@@ -1,12 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:riverpod_test/view_model.dart';
 import 'package:riverpod_test/provider.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 // import 'data/count_data.dart';
 
 void main() {
+  // テストの前に一度だけ実行する
+  setUpAll(() async {
+    await loadAppFonts();
+  });
+
   runApp(
     ProviderScope(
       child: const MyApp(),
@@ -24,23 +31,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: MyHomePage(
+        ViewModel(),
+      ),
     );
   }
 }
 
 class MyHomePage extends ConsumerStatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  final ViewModel viewModel;
+  MyHomePage(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
-  ViewModel _viewModel = ViewModel();
+  late ViewModel _viewModel;
   @override
   void initState() {
     super.initState();
+    _viewModel = widget.viewModel;
     // ConsumerStatefulWidgetのConsumerStateの場合直接アクセスできる
     _viewModel.setRef(ref);
   }
