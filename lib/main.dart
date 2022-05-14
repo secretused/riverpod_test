@@ -9,10 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 // import 'data/count_data.dart';
 
 void main() {
-  // テストの前に一度だけ実行する
-  setUpAll(() async {
-    await loadAppFonts();
-  });
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
     ProviderScope(
