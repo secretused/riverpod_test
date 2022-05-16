@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:riverpod_test/logic.dart';
+import 'package:riverpod_test/logic/logic.dart';
 
 void main() {
   Logic target = Logic();

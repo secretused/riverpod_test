@@ -43,14 +43,15 @@ class MyHomePage extends ConsumerStatefulWidget {
   ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends ConsumerState<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage>
+    with TickerProviderStateMixin {
   late ViewModel _viewModel;
   @override
   void initState() {
     super.initState();
     _viewModel = widget.viewModel;
     // ConsumerStatefulWidgetのConsumerStateの場合直接アクセスできる
-    _viewModel.setRef(ref);
+    _viewModel.setRef(ref, this);
   }
 
   @override
@@ -76,14 +77,20 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                   onPressed: () {
                     _viewModel.onIncrease();
                   },
-                  child: const Icon(CupertinoIcons.add),
+                  child: ScaleTransition(
+                    scale: _viewModel.animationPlus,
+                    child: const Icon(CupertinoIcons.add),
+                  ),
                 ),
                 FloatingActionButton(
                   // readを使うことでfloatingActionButtonを再描画させない
                   onPressed: () {
                     _viewModel.onDecrease();
                   },
-                  child: const Icon(CupertinoIcons.minus),
+                  child: ScaleTransition(
+                    scale: _viewModel.animationMinus,
+                    child: const Icon(CupertinoIcons.minus),
+                  ),
                 ),
               ],
             ),
@@ -107,7 +114,10 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         onPressed: () {
           _viewModel.onReset();
         },
-        child: const Icon(Icons.refresh),
+        child: ScaleTransition(
+          scale: _viewModel.animationReset,
+          child: const Icon(CupertinoIcons.refresh),
+        ),
       ),
     );
   }
