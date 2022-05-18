@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:riverpod_test/logic/button_animation_logic.dart';
 import 'package:riverpod_test/view_model.dart';
 import 'package:riverpod_test/provider.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -77,10 +78,9 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
                   onPressed: () {
                     _viewModel.onIncrease();
                   },
-                  child: ScaleTransition(
-                    scale: _viewModel.animationPlus,
-                    child: const Icon(CupertinoIcons.add),
-                  ),
+                  child: ButtonAnimation(
+                      animationConbination:
+                          _viewModel.animationPlusConbination),
                 ),
                 FloatingActionButton(
                   // readを使うことでfloatingActionButtonを再描画させない
@@ -119,6 +119,24 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
           child: const Icon(CupertinoIcons.refresh),
         ),
       ),
+    );
+  }
+}
+
+class ButtonAnimation extends StatelessWidget {
+  final AnimationConbination animationConbination;
+  ButtonAnimation({
+    Key? key,
+    required this.animationConbination,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: animationConbination.animationScale,
+      child: RotationTransition(
+          turns: animationConbination.animationRotation,
+          child: const Icon(CupertinoIcons.add)),
     );
   }
 }

@@ -32,14 +32,16 @@ class ViewModel {
 
     _buttonAnimationLogicPlus =
         ButtonAnimationLogic(tickerProvider, conditionPlus);
+
     _buttonAnimationLogicMinus = ButtonAnimationLogic(tickerProvider,
         (CountData oldValue, CountData newValue) {
       return oldValue.countDown + 1 == newValue.countDown;
     });
+
     _buttonAnimationLogicreset = ButtonAnimationLogic(
         tickerProvider,
         (oldValue, newvalue) =>
-            oldValue.countUp == 0 && newvalue.countDown == 0);
+            newvalue.countUp == 0 && newvalue.countDown == 0);
 
     _soundLogic.load();
 
@@ -58,7 +60,10 @@ class ViewModel {
       .watch(countDataProvider.select((value) => value.countDown))
       .toString();
 
-  get animationPlus => _buttonAnimationLogicPlus.animationScale;
+  get animationPlusScale => _buttonAnimationLogicPlus.animationScale;
+  get animationPlusRoatation => _buttonAnimationLogicPlus.animationRotation;
+  get animationPlusConbination =>
+      _buttonAnimationLogicPlus.animationConbination;
   get animationMinus => _buttonAnimationLogicMinus.animationScale;
   get animationReset => _buttonAnimationLogicreset.animationScale;
 
@@ -66,7 +71,6 @@ class ViewModel {
     // Logicで計算してもらう
     _logic.increase();
     //Logicで更新された値をcountDataProvider
-    // _ref.watch(countDataProvider.notifier).update((state) => _logic.countData);
     update();
   }
 
@@ -89,6 +93,8 @@ class ViewModel {
     CountData newvalue = _ref.watch(countDataProvider.notifier).state;
 
     // 各LogicのvalueChangeを読み込み、関数を実行
-    notifiers.forEach((element) => element.valueChange(oldValue, newvalue));
+    notifiers.forEach((element) {
+      element.valueChange(oldValue, newvalue);
+    });
   }
 }
